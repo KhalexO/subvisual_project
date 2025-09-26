@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyToken (ERC20) – dApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>MyToken (ERC20) – dApp</h1>
+      <p class="muted">Expected network: <b>31337 (Anvil)</b> · RPC: <code>http://127.0.0.1:8545</code></p>
+      <p class="muted">Status: <b id="connState">Disconnected</b> · Role: <b id="role">—</b></p>
+    </header>
+
+    <!-- connect -->
+    <section class="card">
+      <div class="row">
+        <button id="connect">Connect wallet</button>
+        <span class="muted">Account: <b id="account">—</b></span>
+      </div>
+      <div class="row">
+        <span>Contract:</span> <code id="addr">—</code>
+        <small id="net" class="muted"></small>
+      </div>
+      <div class="row">
+        <span class="muted">Balance (my account): <b id="balance">—</b></span>
+      </div>
+    </section>
+
+    <!-- gated areas (hidden until connected) -->
+    <section id="sec-transfer" class="card gated hidden">
+      <h3>Transfer</h3>
+      <div class="row">
+        <input id="to"  placeholder="recipient 0x..." size="42" />
+        <input id="amt" placeholder="amount (e.g., 5)" type="number" />
+        <button id="transfer">Transfer</button>
+      </div>
+      <p class="muted">Any account with a balance can transfer MTK to another.</p>
+      <div class="row"><small id="txTransfer" class="muted"></small></div>
+    </section>
+
+    <section id="sec-mint" class="card gated hidden">
+      <h3>Mint (owner only)</h3>
+      <div class="row">
+        <input id="mintTo"  placeholder="recipient 0x..." size="42" />
+        <input id="mintAmt" placeholder="amount (e.g., 100)" type="number" />
+        <button id="mint">Mint</button>
+      </div>
+      <p class="muted">The <code>mint</code> function can only be called by the <b>owner</b> (the account that deployed the contract).</p>
+      <div class="row"><small id="txMint" class="muted"></small></div>
+    </section>
+
+    <section id="sec-read" class="card gated hidden">
+      <h3>Check balance of any address</h3>
+      <div class="row">
+        <input id="checkAddr" placeholder="0x... address" size="60" />
+        <button id="checkBal">Check balance</button>
+        <span id="checkedBal" class="muted"></span>
+      </div>
+      <div class="row"><button id="refresh">Refresh my balance</button></div>
+      <div class="row"><small id="txRead" class="muted"></small></div>
+    </section>
+
+    <!-- scripts -->
+    <script src="config.js"></script> <!-- user-editable config -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
