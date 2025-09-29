@@ -7,11 +7,11 @@ In addition, this project includes a simple frontend that allows you to interact
 
 It is designed as a minimal example of how to build, deploy, and use a custom ERC20 token with both command-line tools and a web interface.
 
-**Note**: This project was developed with **macOS/Linux** in mind.
-If you are using Windows, it is strongly recommended to run it inside **WSL** (Windows Subsystem for Linux) for compatibility with shell commands (export, awk, etc).
+>**Note**: This project was developed with **macOS/Linux** in mind.
+>If you are using Windows, it is strongly recommended to run it inside **WSL** (Windows Subsystem for Linux) for compatibility with shell commands (export, awk, etc).
 
-**Important**: All commands below must be run from the project root folder, named **subvisual_project**, unless explicitly stated otherwise.
-The only step that changes directory is when serving the frontend (step 6), where you should **cd frontend** in the third terminal.
+>**Important**: All commands below must be run from the project root folder, named **subvisual_project**, unless explicitly stated otherwise.
+>The only step that changes directory is when serving the frontend (step 6), where you should **cd frontend** in the third terminal.
 
 ### Features
 
@@ -39,11 +39,12 @@ $ foundryup
 $ forge --version
 $ anvil --version
 ```
-If you’re on Windows, do this inside WSL.
+>If you’re on Windows, do this inside WSL.
 
 ### Usage
 
->Project root: subvisual_project (make sure your terminal is in this folder)
+>Project root: subvisual_project
+>(make sure your terminal is in this folder)
 
 #### 1. Start a local blockchain (in the first terminal)
 
