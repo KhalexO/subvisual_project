@@ -7,8 +7,11 @@ In addition, this project includes a simple frontend that allows you to interact
 
 It is designed as a minimal example of how to build, deploy, and use a custom ERC20 token with both command-line tools and a web interface.
 
-Note: This project was developed with **macOS/Linux** in mind.
+**Note**: This project was developed with **macOS/Linux** in mind.
 If you are using Windows, it is strongly recommended to run it inside **WSL** (Windows Subsystem for Linux) for compatibility with shell commands (export, awk, etc).
+
+**Important**: All commands below must be run from the project root folder, named **subvisual_project**, unless explicitly stated otherwise.
+The only step that changes directory is when serving the frontend (step 6), where you should **cd frontend** in the third terminal.
 
 ### Features
 
@@ -18,14 +21,35 @@ If you are using Windows, it is strongly recommended to run it inside **WSL** (W
 - Mint new MTK tokens (only deployer/owner).
 - Each transaction shows hash and ETH cost.
 
+### Prerequisites
+
+Install Foundry (Forge & Anvil)
+
+```shell
+# 1) Install the Foundry toolchain
+$ curl -L https://foundry.paradigm.xyz | bash
+
+# 2) Load the environment (open a new shell OR source the profile)
+$ source ~/.bashrc    # or ~/.zshrc depending on your shell
+
+# 3) Get the latest binaries
+$ foundryup
+
+# Verify
+$ forge --version
+$ anvil --version
+```
+If you’re on Windows, do this inside WSL.
+
 ### Usage
+
+>Project root: subvisual_project (make sure your terminal is in this folder)
 
 #### 1. Start a local blockchain (in the first terminal)
 
 Anvil simulates a local Ethereum blockchain with pre-funded accounts, ideal for development and testing.
 
 ```shell
-$ cd ~/dev/subvisual-dapp
 $ anvil
 ```
 
@@ -35,7 +59,6 @@ Forge is used (part of Foundry) to deploy the contract.
 **$RPC** specifies the RPC endpoint of Anvil, and **$PRIVATE_KEY** uses one of the pre-funded accounts.
 
 ```shell
-$ cd ~/dev/subvisual-dapp
 $ export RPC=http://127.0.0.1:8545
 $ export PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 $ forge create src/MyToken.sol:MyToken \
@@ -75,19 +98,24 @@ $ forge test
 You need to serve the frontend locally. You can use either Python’s built-in HTTP server or Node’s http-server:
 
 ```shell
-$ cd ~/dev/subvisual-dapp/frontend
+$ cd frontend
 $ python3 -m http.server 5173
 ```
 (or alternatively)
 
 ```shell
+$ cd frontend
 $ npx http-server .
 ```
 
 #### 7. Open in browser
 
-Go to http://localhost:5173 and connect **MetaMask**(required).
-Make sure MetaMask is configured to use chainId 31337 (the default for Anvil).
+- Install the MetaMask browser extension.
+- Go to http://localhost:5173 and connect **MetaMask**(required).
+- Make sure MetaMask is configured to use chainId 31337 (the default for Anvil).
+- You will import an account using the private key from Anvil (see “Default Anvil Accounts” below).
+- Choose Import Account in MetaMask.
+- Paste the private key of Account[0] (shown below).
 
 Once connected, you can:
 - Check your MTK balance
