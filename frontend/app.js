@@ -99,10 +99,11 @@ async function getContractAddress() {
 }
 
 function setGated(connected, owner){
-  for (const node of els.gated) node.classList.toggle("hidden", !connected);
-  els.mintSec.classList.toggle("hidden", !(connected && owner));
-  els.connState.textContent = connected ? "Connected" : "Disconnected";
-  els.role.textContent = connected ? (owner ? "Owner" : "User") : "—";
+  const show = !!connected;
+  for (const node of els.gated) node.classList.toggle("hidden", !show);
+  els.mintSec.classList.toggle("hidden", !(show && owner));
+  els.connState.textContent = show ? "Connected" : "Disconnected";
+  els.role.textContent = show ? (owner ? "Owner" : "User") : "—";
 }
 
 async function ensureProvider(){
@@ -114,13 +115,14 @@ async function ensureProvider(){
         rpcUrls:[RPC_URL],
       }]});
       provider = new ethers.BrowserProvider(window.ethereum);
-      try { signer = await provider.getSigner(); isConnected = !!signer; }
-      catch { signer = null; isConnected = false; }
+      signer = null;
+      isConnected = false;
     } else {
       provider = new ethers.JsonRpcProvider(RPC_URL);
-      signer = null; isConnected = false;
+      signer = null; 
+      isConnected = false;
     }
-    setGated(isConnected, false);
+    setGated(false, false);
   } catch (e) {
     showFriendlyError(els.txRead, e);
   }
@@ -168,12 +170,34 @@ async function initContract(){
 async function connect(){
   await ensureProvider();
   try {
-    if (window.ethereum) await window.ethereum.request({ method:"eth_requestAccounts" });
-    signer = await provider.getSigner(); isConnected = true;
+    if (!window.ethereum) return alert("MetaMask not available.");
+    await window.ethereum.request({ method:"eth_requestAccounts" });
+    signer = await provider.getSigner();
+    isConnected = true;
+
     els.account.textContent = await signer.getAddress();
-    await initContract(); await refresh();
+    await initContract();
+    await refresh();
   } catch (e) {
     showFriendlyError(els.txRead, e);
+  }
+}
+
+async function tryAutoConnect(){
+  if (!window.ethereum) return;
+  try {
+    const accs = await window.ethereum.request({ method: "eth_accounts" });
+    if (accs && accs.length){
+      signer = await provider.getSigner();
+      isConnected = true;
+      els.account.textContent = accs[0];
+      await initContract();
+      await refresh();
+    } else {
+      setGated(false, false);
+    }
+  } catch {
+    setGated(false, false);
   }
 }
 
@@ -267,7 +291,42 @@ async function doTransfer(){
   }
 }
 
-// handlers
+// Event listeners (MetaMask) 
+function attachWalletListeners(){
+  if (!window.ethereum) return;
+
+  window.ethereum.on("accountsChanged", async (accs) => {
+    try {
+      if (!accs || !accs.length){
+        signer = null; isConnected = false; isOwner = false;
+        els.account.textContent = "—";
+        els.balance.textContent = "—";
+        setGated(false, false);
+        return;
+      }
+      signer = await provider.getSigner();
+      isConnected = true;
+      els.account.textContent = accs[0];
+      await initContract();
+      await refresh();
+    } catch (e) {
+      showFriendlyError(els.txRead, e);
+    }
+  });
+
+  window.ethereum.on("chainChanged", () => {
+    location.reload();
+  });
+
+  window.ethereum.on("disconnect", () => {
+    signer = null; isConnected = false; isOwner = false;
+    els.account.textContent = "—";
+    els.balance.textContent = "—";
+    setGated(false, false);
+  });
+}
+
+// Handlers UI
 document.getElementById("connect").onclick  = connect;
 document.getElementById("refresh").onclick  = refresh;
 document.getElementById("mint").onclick     = doMint;
@@ -277,8 +336,14 @@ document.getElementById("checkBal").onclick = async () => {
   if (a) await showBalanceOf(a, els.checked);
 };
 
-// (read-only, UI locked until connected)
-(async () => { await ensureProvider(); await initContract(); })().catch(e => showFriendlyError(els.txRead, e));
+// Boot
+(async () => {
+  await ensureProvider();
+  attachWalletListeners();
+  await initContract();
+  await tryAutoConnect();
+})().catch(e => showFriendlyError(els.txRead, e));
+
 
 
 
