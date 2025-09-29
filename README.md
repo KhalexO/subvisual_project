@@ -61,7 +61,16 @@ Open frontend/config.js and replace the CONTRACT_ADDRESS value with the address 
 const CONTRACT_ADDRESS = "0x...";
 ```
 
-#### 5. Run a local web server (in a third terminal)
+#### 5. Run automatic tests
+
+You can test the contract automatically using **Forge**, which comes with a fast built-in testing framework.
+Make sure you’re in the project’s root directory(cd ~/dev/subvisual-dapp) and run:
+
+```shell
+$ forge test
+```
+
+#### 6. Run a local web server (in a third terminal)
 
 You need to serve the frontend locally. You can use either Python’s built-in HTTP server or Node’s http-server:
 
@@ -75,7 +84,7 @@ $ python3 -m http.server 5173
 $ npx http-server .
 ```
 
-#### 6. Open in browser
+#### 7. Open in browser
 
 Go to http://localhost:5173 and connect **MetaMask**(required).
 Make sure MetaMask is configured to use chainId 31337 (the default for Anvil).
