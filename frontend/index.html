@@ -14,7 +14,6 @@
       <p class="muted">Status: <b id="connState">Disconnected</b> · Role: <b id="role">—</b></p>
     </header>
 
-    <!-- connect -->
     <section class="card">
       <div class="row">
         <button id="connect">Connect wallet</button>
@@ -29,7 +28,6 @@
       </div>
     </section>
 
-    <!-- gated areas (hidden until connected) -->
     <section id="sec-transfer" class="card gated hidden">
       <h3>Transfer</h3>
       <div class="row">
@@ -63,8 +61,7 @@
       <div class="row"><small id="txRead" class="muted"></small></div>
     </section>
 
-    <!-- scripts -->
-    <script src="config.js"></script> <!-- user-editable config -->
+    <script src="config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
     <script src="app.js"></script>
   </body>

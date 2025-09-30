@@ -1,5 +1,4 @@
 const RPC_URL = "http://127.0.0.1:8545";
-// Fallback if config.js doesn't exist or doesn't have the current chainId
 const DEFAULT_CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 const ABI = [
@@ -20,11 +19,11 @@ const els = {
   addr:       document.getElementById("addr"),
   net:        document.getElementById("net"),
   checked:    document.getElementById("checkedBal"),
-  // per-section logs
+
   txTransfer: document.getElementById("txTransfer"),
   txMint:     document.getElementById("txMint"),
   txRead:     document.getElementById("txRead"),
-  // gating
+
   gated:      Array.from(document.querySelectorAll(".gated")),
   mintSec:    document.getElementById("sec-mint"),
 };
@@ -291,7 +290,6 @@ async function doTransfer(){
   }
 }
 
-// Event listeners (MetaMask) 
 function attachWalletListeners(){
   if (!window.ethereum) return;
 
@@ -326,7 +324,6 @@ function attachWalletListeners(){
   });
 }
 
-// Handlers UI
 document.getElementById("connect").onclick  = connect;
 document.getElementById("refresh").onclick  = refresh;
 document.getElementById("mint").onclick     = doMint;
@@ -336,7 +333,6 @@ document.getElementById("checkBal").onclick = async () => {
   if (a) await showBalanceOf(a, els.checked);
 };
 
-// Boot
 (async () => {
   await ensureProvider();
   attachWalletListeners();
