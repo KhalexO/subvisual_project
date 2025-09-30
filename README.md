@@ -79,10 +79,13 @@ $ echo "Deployed at: $ADDR"
 #### 4. Configure the frontend
 
 Update the frontend configuration so it knows which contract to interact with.
-Open frontend/config.js and replace the CONTRACT_ADDRESS value with the address of your deployed contract (if needed):
+Open `frontend/config.js` and set the address for your current chainId:
 
 ```js
-const CONTRACT_ADDRESS = "0x...";
+// Example: Anvil (chainId 31337)
+window.CONTRACTS = {
+  "31337": "0xDeployedContractAddressHere"
+};
 ```
 
 #### 5. Run automatic tests
