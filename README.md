@@ -137,3 +137,13 @@ Private Key: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 Balance: 10000 ETH  
 
 (and similar for accounts 1–9)
+
+### Key Technical Decisions
+
+- **Framework:** Used [Foundry](https://book.getfoundry.sh/) for contract development and deployment, due to its speed and native integration with `anvil`, `forge`, and `cast`.  
+- **Smart Contract:** Extended OpenZeppelin's `ERC20` and `Ownable` contracts to ensure standard-compliant and secure token behavior without reinventing logic.  
+- **Frontend:** Built a static HTML/JS interface using `ethers.js` to interact directly with MetaMask and the deployed contract.  
+- **Contract Discovery:** The frontend dynamically detects the deployed address via `config.js` (`window.CONTRACTS`) based on the current chainId.  
+- **UX/UI:** The interface automatically hides owner-only actions (minting) for non-owners and displays connection state, balances, and transaction details.  
+- **Error Handling:** Implemented friendly error messages to handle both blockchain errors and MetaMask actions gracefully.  
+- **Deployment Flexibility:** Supports redeploying with any account by simply updating `config.js` without modifying the codebase.
